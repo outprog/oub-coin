@@ -1,23 +1,16 @@
 const OutBancorToken = artifacts.require("OutBancorToken");
 
-contract('MarketMakerProxy Test', async (accounts) => {
-    it("should had 9.900906e+24 ob", async () => {
-        let out = await OutBancorToken.deployed()
-
-        let res = await out.balanceOf.call('0xE6A055BE46236019204aa432c9989830a8ccA72A')
-        assert.equal(res.toNumber(), 9.900906e+24, 'wrong number')
-    })
-
+contract('OutBancorToken Test', async (accounts) => {
     it("should buy success", async () => {
         let out = await OutBancorToken.deployed()
 
-        let tx = await out.sendTransaction({value: 1e+18, from: accounts[0]})
+        let tx = await out.sendTransaction({value: 5e+18, from: accounts[0]})
         console.log(tx.logs[0].args)
+        let wad = tx.logs[0].args.wad
+        console.log(wad)
 
         let res = await out.balanceOf.call(accounts[0])
-        console.log(res)
-        assert.equal(res.toNumber() > 0, true, 'failed')
-        assert.equal(res.toNumber(), tx.logs[0].args.wad.toNumber(), 'failed')
+        assert.equal(res.toNumber(), wad.toNumber(), 'failed')
     })
 
     it("should sell success", async () => {
@@ -26,11 +19,18 @@ contract('MarketMakerProxy Test', async (accounts) => {
         let tx = await out.sendTransaction({value: 1e+18, from: accounts[1]})
         console.log(tx.logs[0].args)
         let wad = tx.logs[0].args.wad
-
-        tx = await out.sell(wad, {from: accounts[1]})
-        console.log(tx.logs[0].args)
+        console.log(wad)
 
         let res = await out.balanceOf.call(accounts[1])
+        assert.equal(res.toNumber(), wad.toNumber(), 'failed')
+
+        // test sell
+        tx = await out.sell(wad, {from: accounts[1]})
+        console.log(tx.logs[0].args)
+        wad = tx.logs[0].args.wad
+        console.log(wad)
+        
+        res = await out.balanceOf.call(accounts[1])
         assert.equal(res.toNumber(), 0, 'failed')
     })
 })

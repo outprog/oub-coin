@@ -13,11 +13,8 @@ contract OutBancorToken is
     string public unit = "ob";
     uint public decimals = 18;
 
-    // uint256 public supplyLimit = 19900906 * (10 ** decimals);
-    uint256 public supplyLimit = 1000 * (10 ** decimals);
+    uint256 public supplyLimit = 19900906 * (10 ** decimals);
     uint256 public etherMax = 10 ether;
-    // uint256 public supplyLimit = 1000;
-    // uint256 public etherMax = 10;
     uint256 public yMax = supplyLimit.mul(2).div(etherMax);
 
     event Buy(address indexed user, uint eth, uint wad);

@@ -23,6 +23,10 @@ var kovanWallet = Wallet.fromPrivateKey(kovanPrivateKey)
 var kovanProvider = new WalletProvider(kovanWallet, 'https://kovan.infura.io/xIlWyRMZ7pLPhZZTXwcM')
 // var kovanProvider = new WalletProvider(kovanWallet, 'http://127.0.0.1:8887/')
 
+var mainnetPrivateKey = new Buffer(process.env["MAINNET_PRIVATE_KEY"], 'hex')
+var mainnetWallet = Wallet.fromPrivateKey(mainnetPrivateKey)
+var mainnetProvider = new WalletProvider(mainnetWallet, 'https://mainnet.infura.io/')
+
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // to customize your Truffle configuration!
@@ -37,6 +41,12 @@ module.exports = {
       network_id: '42',
       gas: 4000000,
       gasPrice: web3.toWei('5', 'gwei'),
+    },
+    mainnet: {
+      provider: mainnetProvider,
+      network_id: '1',
+      gas: 2000000,
+      gasPrice: web3.toWei('8', 'gwei'),
     }
   }
 };
